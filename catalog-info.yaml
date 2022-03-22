@@ -40,8 +40,7 @@ spec:
     - resource:default/search-adapter
     - component:default/search-adapter
     - service:default/search-adapter
-    - default/search-adapter
-    - search-adapter
+    - component:search-adapter
   providesApis:
     - indexer-api-xxx
 ---
