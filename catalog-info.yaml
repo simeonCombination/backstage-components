@@ -7,5 +7,5 @@ metadata:
     github.com/project-slug: backstage/demoSimeon
 spec:
   type: website
-  owner: Simeon
+  owner: simeon.petkov
   lifecycle: experimental

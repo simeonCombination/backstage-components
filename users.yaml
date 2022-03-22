@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: dream-team
+  description: Dream Team
+spec:
+  type: team
+  profile:
+    # Intentional no displayName for testing
+    email: dream.team@example.com
+    picture: https://cdn-acgla.nitrocdn.com/bvIhcJyiWKFqlMsfAAXRLitDZjWdRlLX/assets/static/optimized/rev-5131b73/wp-content/uploads/2020/10/shutterstock_607073963-1.jpg
+  parent: backstage
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: simeon.petkov
+spec:
+  profile:
+    # Intentional no displayName for testing
+    email: simeon.petkov@example.com
+    picture: https://upload.wikimedia.org/wikipedia/en/4/44/Speakenglish.jpg
+  memberOf: [dream-team]
+  
