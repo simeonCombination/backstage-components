@@ -38,6 +38,8 @@ spec:
   system: the-system
   dependsOn:
     - resource:search-adapter
+    - component:search-adapter
+    - service:search-adapter
   providesApis:
     - indexer-api-xxx
 ---
