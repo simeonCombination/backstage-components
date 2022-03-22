@@ -10,3 +10,46 @@ spec:
   owner: dream-team
   kind: user
   lifecycle: experimental
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: search-adapter
+  description: search adapter
+spec:
+  type: service
+  lifecycle: production
+  owner: dream-team
+  system: the-system
+  dependsOn:
+    - resource:xxx
+  providesApis:
+    - adapter-api-xxx
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: search-indexer
+  description: search indexer
+spec:
+  type: service
+  lifecycle: production
+  owner: dream-team
+  system: the-system
+  dependsOn:
+    - resource:search-adapter
+  providesApis:
+    - indexer-api-xxx
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: elastic-search
+  description: elastic search
+spec:
+  type: library
+  lifecycle: production
+  owner: dream-team
+  system: the-system
+  dependsOn:
+    - resource:search-indexer
