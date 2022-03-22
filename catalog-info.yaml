@@ -37,9 +37,11 @@ spec:
   owner: dream-team
   system: the-system
   dependsOn:
-    - resource:search-adapter
-    - component:search-adapter
-    - service:search-adapter
+    - resource:default/search-adapter
+    - component:default/search-adapter
+    - service:default/search-adapter
+    - default/search-adapter
+    - search-adapter
   providesApis:
     - indexer-api-xxx
 ---
