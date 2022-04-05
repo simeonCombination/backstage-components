@@ -26,9 +26,9 @@ spec:
   system: system-a
   subcomponentOf: search-engine
   dependsOn:
-    - resource:xxx
+    - elastic-search
   providesApis:
-    - adapter-api-xxx
+    - search-adapter-api
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
