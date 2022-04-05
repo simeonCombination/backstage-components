@@ -18,7 +18,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: search-adapter
-  description: search adapter
+  description: search adapter description search adapter description search adapter description search adapter description
 spec:
   type: service
   lifecycle: production
@@ -34,30 +34,55 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: search-indexer
-  description: search indexer
+  description: search indexer description search indexer description search indexer description search indexer description 
 spec:
   type: service
   lifecycle: production
   owner: team-a
   system: system-a
   subcomponentOf: search-engine  
-  dependsOn:
-    - resource:default/search-adapter
-    - component:default/search-adapter
-    - service:default/search-adapter
-    - component:search-adapter
-  providesApis:
-    - indexer-api-xxx
+  dependencyOf:
+    - elastic-search
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: elastic-search
-  description: elastic search
+  description: elastic search description elastic search description elastic search description elastic search description 
 spec:
   type: library
   lifecycle: production
   owner: team-a
   system: system-a
   dependsOn:
-    - resource:search-indexer
+    - component:search-indexer
+  dependencyOf:
+    - search-adapter
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: search-adapter-api
+  description: search/completions/suggestions
+spec:
+  type: openapi
+  lifecycle: production
+  owner: team-a
+  system: system-a
+  definition: |
+    openapi: "3.0.0"
+    info:
+      version: 1.0.0
+      title: Search Engine API (search/completions/suggestions)
+    servers:
+      - url: https://search-master-engine-adapter.cmbsports.dev/search/v1
+    paths:
+      /search:
+        post:
+          summary: matching search records
+      /completions:
+        post:
+          summary: completions matching the search term
+      /suggestions:
+        post:
+          summary: suggests entities based on country code (using static popularity)
