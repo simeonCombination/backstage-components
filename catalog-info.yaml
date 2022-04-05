@@ -8,11 +8,13 @@ spec:
   lifecycle: production
   owner: teamA
   system: systemA
+  dependsOn:
+    - component:elastic-search
+    - component:search-indexer
   hasPart:
     - component:search-adapter
     - component:search-indexer
-  dependsOn:
-    - component:elastic-search
+    - component:elastic-search        
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
