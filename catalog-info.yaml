@@ -8,17 +8,10 @@ spec:
   lifecycle: production
   owner: team-a
   system: system-a
-  dependsOn:
-    - component:elastic-search
-    - component:search-indexer
   hasPart:
     - component:search-adapter
     - component:search-indexer
-    - component:elastic-search
-  subcomponentOf: search-indexer
-  partOf:
-    - component:search-indexer
-  naMaikaTi:
+  customRelation:
     - component:search-indexer
 ---
 apiVersion: backstage.io/v1alpha1
@@ -31,6 +24,7 @@ spec:
   lifecycle: production
   owner: team-a
   system: system-a
+  subcomponentOf: search-engine
   dependsOn:
     - resource:xxx
   providesApis:
@@ -46,6 +40,7 @@ spec:
   lifecycle: production
   owner: team-a
   system: system-a
+  subcomponentOf: search-engine  
   dependsOn:
     - resource:default/search-adapter
     - component:default/search-adapter
