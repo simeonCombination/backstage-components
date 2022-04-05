@@ -15,10 +15,11 @@ spec:
     - component:search-adapter
     - component:search-indexer
     - component:elastic-search
-  subcomponentOf:
-    - component:search-indexer
+  subcomponentOf: search-indexer
   partOf:
-    - component:search-indexer    
+    - component:search-indexer
+  naMaikaTi:
+    - component:search-indexer
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
