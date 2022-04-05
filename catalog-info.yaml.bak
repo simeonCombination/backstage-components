@@ -1,18 +1,15 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: Search Engine
-  description: search engine description search engine description search engine description
+  name: demoSimeon
+  description: An example deployment of a Backstage application.
+  annotations:
+    github.com/project-slug: backstage/demoSimeon
 spec:
-  type: service
-  lifecycle: production
-  owner: teamA
-  system: systemA
-  hasPart:
-    - component:search-adapter
-    - component:search-indexer
-  dependsOn:
-    - component:elastic-search
+  type: website
+  owner: dream-team
+  kind: user
+  lifecycle: experimental
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -22,8 +19,8 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: teamA
-  system: systemA
+  owner: dream-team
+  system: the-system
   dependsOn:
     - resource:xxx
   providesApis:
@@ -37,8 +34,8 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: teamA
-  system: systemA
+  owner: dream-team
+  system: the-system
   dependsOn:
     - resource:default/search-adapter
     - component:default/search-adapter
@@ -55,7 +52,7 @@ metadata:
 spec:
   type: library
   lifecycle: production
-  owner: teamA
-  system: systemA
+  owner: dream-team
+  system: the-system
   dependsOn:
     - resource:search-indexer
