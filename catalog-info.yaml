@@ -6,15 +6,19 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: teamA
-  system: systemA
+  owner: team-a
+  system: system-a
   dependsOn:
     - component:elastic-search
     - component:search-indexer
   hasPart:
     - component:search-adapter
     - component:search-indexer
-    - component:elastic-search        
+    - component:elastic-search
+  subcomponentOf:
+    - component:search-indexer
+  partOf:
+    - component:search-indexer    
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -24,8 +28,8 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: teamA
-  system: systemA
+  owner: team-a
+  system: system-a
   dependsOn:
     - resource:xxx
   providesApis:
@@ -39,8 +43,8 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: teamA
-  system: systemA
+  owner: team-a
+  system: system-a
   dependsOn:
     - resource:default/search-adapter
     - component:default/search-adapter
@@ -57,7 +61,7 @@ metadata:
 spec:
   type: library
   lifecycle: production
-  owner: teamA
-  system: systemA
+  owner: team-a
+  system: system-a
   dependsOn:
     - resource:search-indexer
