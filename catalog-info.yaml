@@ -26,7 +26,7 @@ spec:
   system: system-a
   subcomponentOf: search-engine
   dependsOn:
-    - elastic-search
+    - component:elastic-search
   providesApis:
     - search-adapter-api
 ---
@@ -42,7 +42,7 @@ spec:
   system: system-a
   subcomponentOf: search-engine  
   dependencyOf:
-    - elastic-search
+    - component:elastic-search
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -57,7 +57,7 @@ spec:
   dependsOn:
     - component:search-indexer
   dependencyOf:
-    - search-adapter
+    - component:search-adapter
 ---
 apiVersion: backstage.io/v1alpha1
 kind: API
