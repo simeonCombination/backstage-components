@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: search-engine
-  description: search engine description: https://github.com/CombinationAB/Sports-Search-Engine
+  description: search engine description
 spec:
   type: service
   lifecycle: production
