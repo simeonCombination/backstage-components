@@ -558,3 +558,18 @@ spec:
   system: system-a
   dependencyOf:
     - component:search-indexer
+  dependsOn:
+    - component:StaticPopularityEntityId-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: StaticPopularityEntityId-job
+  description: databricks job
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - resource:cmbentities--popularity-static
