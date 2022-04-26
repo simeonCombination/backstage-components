@@ -43,6 +43,8 @@ spec:
   subcomponentOf: search-engine  
   dependencyOf:
     - component:elastic-search
+  dependsOn:
+    - component:core-mapper-service
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -86,3 +88,16 @@ spec:
       /suggestions:
         post:
           summary: suggests entities based on country code (using static popularity)
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: core-mapper-service
+  description: core mapper service description
+spec:
+  type: service
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:search-indexer  
