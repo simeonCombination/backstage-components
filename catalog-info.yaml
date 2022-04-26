@@ -6,7 +6,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: team-a
+  owner: group:product-search
   system: system-a
   hasPart:
     - component:search-adapter
@@ -22,7 +22,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: team-a
+  owner: group:product-search
   system: system-a
   subcomponentOf: search-engine
   dependsOn:
@@ -38,7 +38,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: team-a
+  owner: group:product-search
   system: system-a
   subcomponentOf: search-engine  
   dependencyOf:
@@ -52,7 +52,7 @@ metadata:
 spec:
   type: library
   lifecycle: production
-  owner: team-a
+  owner: group:product-search
   system: system-a
   dependsOn:
     - component:search-indexer
@@ -67,7 +67,7 @@ metadata:
 spec:
   type: openapi
   lifecycle: production
-  owner: team-a
+  owner: group:product-search
   system: system-a
   definition: |
     openapi: "3.0.0"
