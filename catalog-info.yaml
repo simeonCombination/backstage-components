@@ -100,4 +100,195 @@ spec:
   owner: group:product-search
   system: system-a
   dependencyOf:
-    - component:search-indexer  
+    - component:search-indexer
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: core-mapper-service-api-offer.Offer
+  description: GetCoreIdentifierValues / GetEvent / GetEvents / GetIdentifierValues / GetLanguages / SelectEventIds / SelectEvents / SubscribeChangedEvents
+spec:
+  type: grpc
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  definition: |
+    syntax = "proto3";
+
+    option csharp_namespace = "SportsbookCore.Mapper.Api";
+
+    package offer;
+
+    import "google/protobuf/wrappers.proto";
+    import "google/protobuf/timestamp.proto";
+    import "Offer/Event.proto";
+    import "Offer/Common.proto";
+
+    service Offer {
+
+      rpc GetEvent (GetEventRequest) returns (GetEventResponse) {
+          option deprecated = true;
+      };
+
+      rpc GetEvents (GetEventsRequest) returns (GetEventsResponse) {
+          option deprecated = true;
+      };
+
+      rpc SelectEvents (SelectEventsRequest) returns (GetEventsResponse);
+
+      rpc SelectEventIds (SelectEventIdsRequest) returns (GetEventIdsResponse);
+
+      rpc GetIdentifierValues (GetIdentifierValuesRequest) returns (GetIdentifierValuesResponse);
+
+      rpc GetCoreIdentifierValues (GetCoreIdentifierValuesRequest) returns (GetCoreIdentifierValuesResponse);
+
+      rpc SubscribeChangedEvents (SubscribeChangedEventsRequest) returns (stream SubscribeChangedEventsResponse);
+
+      rpc GetLanguages (GetLanguagesRequest) returns (GetLanguagesResponse);
+    }
+
+    message GetEventRequest {
+      int64 eventId = 1;
+      EventSubselection subselection = 2;
+    }
+
+    message GetEventResponse {
+      Event event = 1;
+      google.protobuf.Timestamp lastEventUpdate = 2;
+    }
+
+    message GetLanguagesRequest {
+    }
+
+    message GetLanguagesResponse {
+      repeated string languages = 1;
+    }
+
+    message GetEventsRequest {
+      repeated int64 eventIds = 1;
+      EventSubselection subselection = 2;
+      EventSortingStrategy sortingStrategy = 3;
+    }
+
+    message GetEventsResponse {
+      repeated Event events = 1;
+      google.protobuf.Timestamp lastEventUpdate = 2;
+    }
+
+    message SelectEventIdsRequest {
+      EventSelector selector = 1;
+      int64 maxResults = 2;
+      EventSortingStrategy sortingStrategy = 3;
+    }
+
+    message SelectEventsRequest {
+      EventSelector selector = 1;
+      EventSubselection subselection = 2;
+      int64 maxResults = 3;
+      EventSortingStrategy sortingStrategy = 4;
+    }
+
+    message GetEventIdsResponse {
+      repeated int64 eventIds = 1;
+    }
+
+    message SubscribeChangedEventsRequest {
+      EventSelector selector = 1;
+      int64 maxResults = 2;
+      google.protobuf.Timestamp updatesSince = 3;
+    }
+
+    message SubscribeChangedEventsResponse {
+      int64 eventId = 1;
+      google.protobuf.Int64Value marketId = 2;
+      google.protobuf.Int64Value outcomeId = 3;
+      google.protobuf.Timestamp lastUpdated = 4;
+    }
+
+    message GetIdentifierValuesRequest {
+      IdentifierType identifier = 1;
+      EventSelector selector = 2;
+      repeated string languages = 3;
+    }
+
+    message GetCoreIdentifierValuesRequest {
+      CoreIdentifierType identifier = 1;
+      EventSelector selector = 2;
+    }
+
+    message GetCoreIdentifierValuesResponse {
+      repeated string values = 1;
+    }
+
+    message GetIdentifierValuesResponse {
+      repeated Property values = 1;
+    }
+
+    /* The EventSelector is evaluated for an event and determines if the event is going to be included in the result.
+     * In case of multiple filters, the boolean operator between them is OR - that means that an event needs to match at least one filter to be selected.
+     * The boolean operator between conditions within a filter is AND - that means that an event needs to match all the conditions in a filter to be selected by it.
+     * When the value for a filter condition is a list (like eventIdIn, marketIdIn or outcomeIdIn) the condition is true when the event matches at least one of the values in the list.
+     * Empty list for eventIdIn, marketIdIn or outcomeIdIn means there is no condition on those ids. */
+    message EventSelector {
+        reserved 2; // Jurisdiction id
+        repeated EventSelectorFilter filters = 1;
+        string countryCode = 3;
+    }
+
+    message EventSelectorFilter {
+        google.protobuf.BoolValue isLive = 1;
+        google.protobuf.BoolValue isOutright = 2;
+        google.protobuf.BoolValue isVirtual = 3;
+        google.protobuf.BoolValue isActive = 4;
+        google.protobuf.BoolValue isDisplayed = 5;
+        EventCoreIdentifiers coreIdentifiers = 10;
+        EventIdentifiers identifiers = 11;
+        repeated int64 eventIdIn = 12;
+        repeated int64 marketIdIn = 13;
+        repeated int64 outcomeIdIn = 14;
+    }
+
+    /* The EventSubselection determines what information for the event will be included in the response.
+     * In case includeMarkets==OnlySpecifiedMarkets the response will contain only the markets specified in the selector (in any of its filters) and the markets that have an outcome specified in the selector.
+     * In case includeOutcomes==OnlySpecifiedOutcomes the resonse will contain only the outcomes specified in the selector.
+     * Since an outcome cannot exist without a market, requests that ask for outcomes (includeOutcomes!=NoOutcomes) but at the same time exclude the markets (includeMarkets==NoMarkets) are invalid.
+     */
+    message EventSubselection {
+      MarketTypeSelection includeMarkets = 1;
+      OutcomeSelection includeOutcomes = 2;
+      repeated string languages = 3;
+      repeated MarketMainType mainTypes = 4;
+      bool includePrices = 5;
+      bool includeRegulatoryFilter = 6;
+      bool includeNotDisplayed = 7;
+      bool includeOutcomeParticipants = 8;
+      bool includeSourceInformation = 10;
+      repeated string marketGroups = 11;
+      int32 maxMarketResults = 12;
+    }
+
+    enum MarketTypeSelection {
+        NoMarkets = 0;
+        AllMarkets = 1;
+        FirstOfTypes = 2;
+        AllOfTypes = 3;
+        AllActive = 4;
+        AllOfGroups = 5;
+        OnlySpecifiedMarkets = 6;
+    }
+
+    enum EventSortingStrategy {
+        SortByEventId = 0;
+        SortByStartTime = 1;
+        SortByStartTimeDesc = 2;
+        SortByLastUpdated = 3;
+        SortByLastUpdatedDesc = 4;
+        SortUsingLegacyMethodDeprecated = 10;
+    }
+
+    enum OutcomeSelection {
+        NoOutcomes = 0;
+        AllOutcomes = 1;
+        WithUniqueParticipants = 2;
+        OnlySpecifiedOutcomes = 3;
+    }
