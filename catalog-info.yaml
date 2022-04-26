@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: search-engine
-  description: search engine description [GitHub repo](https://github.com/CombinationAB/Sports-Search-Engine)
+  description: search engine description <a href="https://github.com/CombinationAB/Sports-Search-Engine">GitHub repo</a>
   links:
     - url: https://github.com/CombinationAB/Sports-Search-Engine
       title: GitHub Repo
