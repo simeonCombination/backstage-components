@@ -543,7 +543,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   name: cmbentities--popularity-static
-  description: cmbentities/popularity-static description
+  description: cmbentities--popularity-static description
   annotations:
     backstage.io/view-url: https://portal.azure.com/#blade/Microsoft_Azure_Storage/ContainerMenuBlade/overview/storageAccountId/%2Fsubscriptions%2F7e1fa0d3-1192-4578-a34d-cf005d9c6865%2FresourceGroups%2Fcmb-dataanalytics-prod-cmb%2Fproviders%2FMicrosoft.Storage%2FstorageAccounts%2Fcmbentities/path/popularity-static/etag/%220x8D9204190503522%22/defaultEncryptionScope/%24account-encryption-key/denyEncryptionScopeOverride//defaultId//publicAccessVal/None
     backstage.io/edit-url: https://portal.azure.com/#blade/Microsoft_Azure_Storage/ContainerMenuBlade/overview/storageAccountId/%2Fsubscriptions%2F7e1fa0d3-1192-4578-a34d-cf005d9c6865%2FresourceGroups%2Fcmb-dataanalytics-prod-cmb%2Fproviders%2FMicrosoft.Storage%2FstorageAccounts%2Fcmbentities/path/popularity-static/etag/%220x8D9204190503522%22/defaultEncryptionScope/%24account-encryption-key/denyEncryptionScopeOverride//defaultId//publicAccessVal/None
