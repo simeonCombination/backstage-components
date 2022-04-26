@@ -56,6 +56,7 @@ spec:
     - component:elastic-search
   dependsOn:
     - component:core-mapper-service
+    - resource:cmbentities/popularity-static    
   consumesApis:
     - core-mapper-service-api-offer.Offer
 ---
