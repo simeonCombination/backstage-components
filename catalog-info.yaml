@@ -552,7 +552,7 @@ metadata:
       title: Azure Container
       icon: dashboard  
 spec:
-  type: database
+  type: azure-blob
   lifecycle: production
   owner: group:product-search
   system: system-a
