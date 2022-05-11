@@ -578,8 +578,12 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: Sports-Search-Engine
+  links:
+    - url: https://github.com/CombinationAB/Sports-Search-Engine
+      title: GitHub Repo
+      icon: github  
 spec:
-  type: GitHubRepository
+  type: github-repository
   lifecycle: production
   owner: group:product-search
   system: system-a
