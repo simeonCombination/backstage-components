@@ -573,12 +573,3 @@ spec:
   system: system-a
   dependencyOf:
     - resource:cmbentities--popularity-static
----
-apiVersion: backstage.io/v1alpha1
-kind: GitHubRepository
-metadata:
-  name: Sports-Search-Engine
-spec:
-  lifecycle: production
-  owner: group:product-search
-  system: system-a
