@@ -19,11 +19,12 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  hasPart:
-    - component:search-adapter
-    - component:search-indexer
-  partOf:
-    - component:Sports-Search-Engine
+  subcomponentOf: Sports-Search-Engine
+  #hasPart:
+  #  - component:search-adapter
+  #  - component:search-indexer
+  #partOf:
+  #  - component:Sports-Search-Engine
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -35,8 +36,9 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  partOf:
-    - component:search-engine
+  subcomponentOf: search-engine  
+  #partOf:
+  #  - component:search-engine
   dependsOn:
     - component:elastic-search
   providesApis:
@@ -52,9 +54,9 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  #subcomponentOf: search-engine  
-  partOf:
-    - component:search-engine
+  subcomponentOf: search-engine
+  #partOf:
+  #  - component:search-engine
   dependencyOf:
     - component:elastic-search
   dependsOn:
@@ -594,8 +596,8 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  hasPart:
-    - component:search-engine
+  #hasPart:
+  #  - component:search-engine
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
