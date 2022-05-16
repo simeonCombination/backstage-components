@@ -24,8 +24,6 @@ spec:
     - component:search-indexer
   partOf:
     - component:Sports-Search-Engine
-  customRelation:
-    - component:search-indexer
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -37,7 +35,7 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  hasPart:
+  partOf:
     - component:search-engine
   dependsOn:
     - component:elastic-search
@@ -54,7 +52,9 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  subcomponentOf: search-engine  
+  #subcomponentOf: search-engine  
+  partOf:
+    - component:search-engine
   dependencyOf:
     - component:elastic-search
   dependsOn:
