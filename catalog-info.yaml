@@ -22,6 +22,8 @@ spec:
   hasPart:
     - component:search-adapter
     - component:search-indexer
+  partOf:
+    - component:Sports-Search-Engine
   customRelation:
     - component:search-indexer
 ---
@@ -35,7 +37,8 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  subcomponentOf: search-engine
+  hasPart:
+    - component:search-engine
   dependsOn:
     - component:elastic-search
   providesApis:
@@ -113,11 +116,13 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  providesApis:
-    - core-mapper-service-api-offer.Offer
-    - core-mapper-service-api-scoreboard.Scoreboards
+  partOf:
+    - component:Sports-Client-SportsbookCoreMapper
   dependencyOf:
     - component:search-indexer
+  providesApis:
+    - core-mapper-service-api-offer.Offer
+    - core-mapper-service-api-scoreboard.Scoreboards    
 ---
 apiVersion: backstage.io/v1alpha1
 kind: API
@@ -571,6 +576,8 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
+  partOf:
+    - component:Sports-Data-DataBricks-Popularity  
   dependencyOf:
     - resource:cmbentities--popularity-static
 ---
@@ -587,3 +594,37 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
+  hasPart:
+    - component:search-engine
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Sports-Client-SportsbookCoreMapper
+  links:
+    - url: https://github.com/CombinationAB/Sports-Client-SportsbookCoreMapper
+      title: GitHub Repo
+      icon: github  
+spec:
+  type: github-repository
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  hasPart:
+    - component:core-mapper-service
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Sports-Data-DataBricks-Popularity
+  links:
+    - url: https://github.com/CombinationAB/Sports-Data-DataBricks-Popularity
+      title: GitHub Repo
+      icon: github  
+spec:
+  type: github-repository
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  hasPart:
+    - component:StaticPopularityEntityId-job
