@@ -614,8 +614,8 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  hasPart:
-    - component:core-mapper-service
+  #hasPart:
+  #  - component:core-mapper-service
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -630,5 +630,5 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  hasPart:
-    - component:StaticPopularityEntityId-job
+  #hasPart:
+  #  - component:StaticPopularityEntityId-job
