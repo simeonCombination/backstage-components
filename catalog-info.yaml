@@ -60,7 +60,7 @@ spec:
   dependencyOf:
     - component:elastic-search
   dependsOn:
-    - component:core-mapper-service
+    #- component:core-mapper-service
     - resource:cmbentities--popularity-static
   consumesApis:
     - core-mapper-service-api-offer.Offer
@@ -118,10 +118,11 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  partOf:
-    - component:Sports-Client-SportsbookCoreMapper
-  dependencyOf:
-    - component:search-indexer
+  subcomponentOf: Sports-Client-SportsbookCoreMapper
+  #partOf:
+  #  - component:Sports-Client-SportsbookCoreMapper
+  #dependencyOf:
+  #  - component:search-indexer
   providesApis:
     - core-mapper-service-api-offer.Offer
     - core-mapper-service-api-scoreboard.Scoreboards    
@@ -578,8 +579,9 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  partOf:
-    - component:Sports-Data-DataBricks-Popularity  
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  #partOf:
+  #  - component:Sports-Data-DataBricks-Popularity  
   dependencyOf:
     - resource:cmbentities--popularity-static
 ---
