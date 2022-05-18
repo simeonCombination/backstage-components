@@ -1,42 +1,51 @@
+#apiVersion: backstage.io/v1alpha1
+#kind: Component
+#metadata:
+#  name: search-engine
+#  description: search engine description (cannot put links here)
+#  annotations:
+#    github.com/project-slug: CombinationAB/Sports-Search-Engine
+#    #backstage.io/managed-by-location: url:https://github.com/CombinationAB/Sports-Search-Engine
+#    #backstage.io/managed-by-origin-location: url:https://github.com/CombinationAB/Sports-Search-Engine
+#    backstage.io/techdocs-ref: url:https://github.com/CombinationAB/Sports-Search-Engine
+#    backstage.io/view-url: https://github.com/CombinationAB/Sports-Search-Engine
+#    backstage.io/edit-url: https://github.com/CombinationAB/Sports-Search-Engine    
+#  links:
+#    - url: https://github.com/CombinationAB/Sports-Search-Engine
+#      title: GitHub Repo
+#      icon: github
+#spec:
+#  type: service
+#  lifecycle: production
+#  owner: group:product-search
+#  system: system-a
+#  subcomponentOf: Sports-Search-Engine
+#  #hasPart:
+#  #  - component:search-adapter
+#  #  - component:search-indexer
+#  #partOf:
+#  #  - component:Sports-Search-Engine
+#---
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: search-engine
-  description: search engine description (cannot put links here)
+  name: search-adapter
+  description: search adapter description search adapter description search adapter description search adapter description
   annotations:
     github.com/project-slug: CombinationAB/Sports-Search-Engine
-    #backstage.io/managed-by-location: url:https://github.com/CombinationAB/Sports-Search-Engine
-    #backstage.io/managed-by-origin-location: url:https://github.com/CombinationAB/Sports-Search-Engine
     backstage.io/techdocs-ref: url:https://github.com/CombinationAB/Sports-Search-Engine
     backstage.io/view-url: https://github.com/CombinationAB/Sports-Search-Engine
     backstage.io/edit-url: https://github.com/CombinationAB/Sports-Search-Engine    
   links:
     - url: https://github.com/CombinationAB/Sports-Search-Engine
       title: GitHub Repo
-      icon: github
+      icon: github    
 spec:
   type: service
   lifecycle: production
   owner: group:product-search
   system: system-a
   subcomponentOf: Sports-Search-Engine
-  #hasPart:
-  #  - component:search-adapter
-  #  - component:search-indexer
-  #partOf:
-  #  - component:Sports-Search-Engine
----
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: search-adapter
-  description: search adapter description search adapter description search adapter description search adapter description
-spec:
-  type: service
-  lifecycle: production
-  owner: group:product-search
-  system: system-a
-  subcomponentOf: search-engine  
   #partOf:
   #  - component:search-engine
   dependsOn:
@@ -54,7 +63,7 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  subcomponentOf: search-engine
+  subcomponentOf: Sports-Search-Engine  
   #partOf:
   #  - component:search-engine
   dependencyOf:
