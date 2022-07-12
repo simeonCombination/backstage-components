@@ -579,6 +579,32 @@ spec:
     - component:StaticPopularityEntityId-job
 ---
 apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: eventhub--combination-placements
+  description: eventhub--combination-placements description
+spec:
+  type: eventhub
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:PlacementsV2-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbanalyticsstor--ingest-placements
+  description: cmbanalyticsstor--ingest-placements description
+spec:
+  type: azure-blob-delta-lake
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependsOn:
+    - component:PlacementsV2-job
+---
+apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: StaticPopularityEntityId-job
@@ -641,3 +667,33 @@ spec:
   system: system-a
   #hasPart:
   #  - component:StaticPopularityEntityId-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Sports-Data-DataBricks-Ingest
+  links:
+    - url: https://github.com/CombinationAB/Sports-Data-DataBricks-Ingest
+      title: GitHub Repo
+      icon: github  
+spec:
+  type: github-repository
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: PlacementsV2-job
+  description: databricks job
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Ingest
+  dependencyOf:
+    - resource:cmbanalyticsstor--ingest-placements
+  dependsOn:
+    - resource:eventhub--combination-placements
