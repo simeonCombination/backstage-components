@@ -603,6 +603,21 @@ spec:
   system: system-a
   dependsOn:
     - component:PlacementsV2-job
+  dependencyOf:
+    - component:UserPlacementsV2-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbanalyticsstor--refined-user-placements
+  description: cmbanalyticsstor--refined-user-placements description
+spec:
+  type: azure-blob-delta-lake
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependsOn:
+    - component:UserPlacementsV2-job
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -697,3 +712,19 @@ spec:
     - resource:cmbanalyticsstor--ingest-placements
   dependsOn:
     - resource:eventhub--combination-placements
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: UserPlacementsV2-job
+  description: databricks job
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependencyOf:
+    - resource:cmbanalyticsstor--refined-user-placements
+  dependsOn:
+    - resource:cmbanalyticsstor--ingest-placements
