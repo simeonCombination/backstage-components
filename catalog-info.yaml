@@ -646,8 +646,9 @@ spec:
   owner: group:product-search
   system: system-a
   dependencyOf:
-    #- component:TODO: RealTimeEntityPopularity  
-    #- component:TODO: UserPlacementsEntityCountry
+    - component:UserPlacementsEntityCountryFull-job
+    - component:UserPlacementsEntityCountryShortTerm-job
+    - component:RealTimeEntityPopularity-job
   dependsOn:
     - component:EnrichedUserPlacements-job
 ---
@@ -827,3 +828,35 @@ spec:
     - resource:cmbanalyticsstor--enriched-user-placements
   dependencyOf:
     - resource:cmbentities--popularity-realtime
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: UserPlacementsEntityCountryFull-job
+  description: databricks job
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependsOn:
+    - resource:cmbanalyticsstor--enriched-user-placements
+  dependencyOf:
+    - resource:cmbanalyticsstor--user-placements-entity-country
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: UserPlacementsEntityCountryShortTerm-job
+  description: databricks job
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependsOn:
+    - resource:cmbanalyticsstor--enriched-user-placements
+  dependencyOf:
+    - resource:cmbanalyticsstor--user-placements-entity-country
