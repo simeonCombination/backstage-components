@@ -666,7 +666,7 @@ spec:
     #- component:TODO: Entities-Offer-job
     - component:EnrichedUserPlacements-job
     #- component:TODO: SportsFeedsLocations-job
-  dependsOn:
+  #dependsOn:
     #- component:TODO: CoreOffersRunner-job
 ---
 apiVersion: backstage.io/v1alpha1
