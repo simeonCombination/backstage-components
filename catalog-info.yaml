@@ -632,8 +632,8 @@ spec:
   owner: group:product-search
   system: system-a
   dependencyOf:
-    - component:TODO: RealTimeEntityPopularity  
-    - component:TODO: UserPlacementsEntityCountry
+    #- component:TODO: RealTimeEntityPopularity  
+    #- component:TODO: UserPlacementsEntityCountry
   dependsOn:
     - component:EnrichedUserPlacements-job
 ---
@@ -648,12 +648,12 @@ spec:
   owner: group:product-search
   system: system-a
   dependencyOf:
-    - component:TODO: CoreToEntityMapper-job
-    - component:TODO: Entities-Offer-job
+    #- component:TODO: CoreToEntityMapper-job
+    #- component:TODO: Entities-Offer-job
     - component:EnrichedUserPlacements-job
-    - component:TODO: SportsFeedsLocations-job
+    #- component:TODO: SportsFeedsLocations-job
   dependsOn:
-    - component:TODO: CoreOffersRunner-job
+    #- component:TODO: CoreOffersRunner-job
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
@@ -666,8 +666,8 @@ spec:
   owner: group:product-search
   system: system-a
   dependencyOf:
-    - component:TODO: EntityService
-    - component:TODO: SearchIndexer
+    #- component:TODO: EntityService
+    #- component:TODO: SearchIndexer
   dependsOn:
     - component:RealTimeEntityPopularity-job
 ---
