@@ -69,7 +69,7 @@ spec:
   dependencyOf:
     - component:elastic-search
   dependsOn:
-    #- component:core-mapper-service
+    - component:core-mapper-service
     - resource:cmbentities--popularity-static
   consumesApis:
     - core-mapper-service-api-offer.Offer
@@ -130,8 +130,8 @@ spec:
   subcomponentOf: Sports-Client-SportsbookCoreMapper
   #partOf:
   #  - component:Sports-Client-SportsbookCoreMapper
-  #dependencyOf:
-  #  - component:search-indexer
+  dependencyOf:
+    - component:search-indexer
   providesApis:
     - core-mapper-service-api-offer.Offer
     - core-mapper-service-api-scoreboard.Scoreboards    
@@ -146,9 +146,10 @@ spec:
   lifecycle: production
   owner: group:product-search
   system: system-a
-  #subcomponentOf: Sports-Entity-Service
+  subcomponentOf: Sports-Entity-Service
   dependsOn:
     - resource:cmbentities--popularity-realtime
+  #TODO: provideApis:
 ---
 apiVersion: backstage.io/v1alpha1
 kind: API
@@ -719,11 +720,90 @@ spec:
   system: system-a
   dependencyOf:
     - component:KMeansUserClusteringModelBuilder-job  
-    #TODO:- component:UserClusgterPopularity-job
-    #TODO:- component:UserClustering
+    - component:UserClusterPopularity-job
+    - component:UserClusteringShortTerm-job
+    - component:UserClusteringFull-job    
   dependsOn:
     - component:NormalizedUserInterestShortTerm-job
     - component:NormalizedUserInterestFull-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbanalyticsstor--user-clustering-models
+  description: the model is built using the full term user interest data
+spec:
+  type: azure-blob
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:UserClusteringShortTerm-job
+    - component:UserClusteringFull-job    
+  dependsOn:
+    - component:KMeansUserClusteringModelBuilder-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbanalyticsstor--user-clustering
+  description: contains a full term and a short term user clustering
+spec:
+  type: azure-blob
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:UserClusterPopularity-job
+  dependsOn:
+    - component:UserClusteringShortTerm-job
+    - component:UserClusteringFull-job    
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbanalyticsstor--user-clustering
+  description: contains a full term and a short term user clustering
+spec:
+  type: azure-blob
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:UserClusterPopularity-job
+  dependsOn:
+    - component:UserClusteringShortTerm-job
+    - component:UserClusteringFull-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbentities--user-clustering
+  description: golden data
+spec:
+  type: azure-blob-json
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:entity-service
+  dependsOn:
+    - component:UserClusterPopularity-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbentities--cluster-popularity
+  description: golden data. stores entity popularity per cluster.
+spec:
+  type: azure-blob-json
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:entity-service
+  dependsOn:
+    - component:UserClusterPopularity-job
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -795,6 +875,20 @@ metadata:
   name: Sports-Data-DataBricks-Ingest
   links:
     - url: https://github.com/CombinationAB/Sports-Data-DataBricks-Ingest
+      title: GitHub Repo
+      icon: github  
+spec:
+  type: github-repository
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Sports-Entity-Service
+  links:
+    - url: https://github.com/CombinationAB/Sports-Entity-Service
       title: GitHub Repo
       icon: github  
 spec:
@@ -936,7 +1030,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: KMeansUserClusteringModelBuilder-job
-  description: databricks job
+  description: the model is built using the full term user interest data
 spec:
   type: databricks-job
   lifecycle: production
@@ -945,5 +1039,57 @@ spec:
   subcomponentOf: Sports-Data-DataBricks-Popularity
   dependsOn:
     - resource:cmbanalyticsstor--normalized-user-interest
-  #dependencyOf:
-  #  TODO:- resource:cmbanalyticsstor--user-clustering-models
+  dependencyOf:
+    - resource:cmbanalyticsstor--user-clustering-models
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: UserClusteringFull-job
+  description: uses the full data (or just the last year?) from normalized-user-interest
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependsOn:
+    - resource:cmbanalyticsstor--normalized-user-interest
+    - resource:cmbanalyticsstor--user-clustering-models
+  dependencyOf:
+    - resource:cmbanalyticsstor--user-clustering
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: UserClusteringShortTerm-job
+  description: uses the short-term data from normalized-user-interest
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependsOn:
+    - resource:cmbanalyticsstor--normalized-user-interest
+    - resource:cmbanalyticsstor--user-clustering-models
+  dependencyOf:
+    - resource:cmbanalyticsstor--user-clustering
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: UserClusterPopularity-job
+  description: writes short-term and full versions of user-clustering. for cluster popularity uses the full user clustering and the full normalized user interest.
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependsOn:
+    - resource:cmbanalyticsstor--normalized-user-interest
+    - resource:cmbanalyticsstor--user-clustering
+  dependencyOf:
+    - resource:cmbentities--user-clustering
+    - resource:cmbentities--cluster-popularity
