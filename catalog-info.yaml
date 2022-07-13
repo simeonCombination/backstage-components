@@ -137,6 +137,20 @@ spec:
     - core-mapper-service-api-scoreboard.Scoreboards    
 ---
 apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: entity-service
+  description: entity service description
+spec:
+  type: service
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  #subcomponentOf: Sports-Entity-Service
+  dependsOn:
+    - resource:cmbentities--popularity-realtime
+---
+apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
   name: core-mapper-service-api-offer.Offer
@@ -666,7 +680,7 @@ spec:
   owner: group:product-search
   system: system-a
   dependencyOf:
-    #- component:TODO: EntityService
+    - component:entity-service
     #- component:TODO: SearchIndexer
   dependsOn:
     - component:RealTimeEntityPopularity-job
