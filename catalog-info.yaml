@@ -632,8 +632,8 @@ spec:
   owner: group:product-search
   system: system-a
   dependencyOf:
-    - component:[TODO: RealTimeEntityPopularity]    
-    - component:[TODO: UserPlacementsEntityCountry]    
+    - component:TODO: RealTimeEntityPopularity  
+    - component:TODO: UserPlacementsEntityCountry
   dependsOn:
     - component:EnrichedUserPlacements-job
 ---
@@ -648,12 +648,28 @@ spec:
   owner: group:product-search
   system: system-a
   dependencyOf:
-    - component:[TODO: CoreToEntityMapper-job]    
-    - component:[TODO: Entities-Offer-job]
+    - component:TODO: CoreToEntityMapper-job
+    - component:TODO: Entities-Offer-job
     - component:EnrichedUserPlacements-job
-    - component:[TODO: SportsFeedsLocations-job]
+    - component:TODO: SportsFeedsLocations-job
   dependsOn:
-    - component:[TODO: CoreOffersRunner-job]
+    - component:TODO: CoreOffersRunner-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbentities--popularity-realtime
+  description: daily / weekly / monthly / yearly
+spec:
+  type: azure-blob
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:TODO: EntityService
+    - component:TODO: SearchIndexer
+  dependsOn:
+    - component:RealTimeEntityPopularity-job
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -781,3 +797,19 @@ spec:
     - resource:cmbanalyticsstor--refined-mapped-swix-dumps
   dependencyOf:
     - resource:cmbanalyticsstor--enriched-user-placements
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: RealTimeEntityPopularity-job
+  description: databricks job
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependsOn:
+    - resource:cmbanalyticsstor--enriched-user-placements
+  dependencyOf:
+    - resource:cmbentities--popularity-realtime
