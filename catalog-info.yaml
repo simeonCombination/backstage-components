@@ -618,6 +618,42 @@ spec:
   system: system-a
   dependsOn:
     - component:UserPlacementsV2-job
+  dependencyOf:
+    - component:EnrichedUserPlacements-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbanalyticsstor--enriched-user-placements
+  description: cmbanalyticsstor--enriched-user-placements description
+spec:
+  type: azure-blob
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:[TODO: RealTimeEntityPopularity]    
+    - component:[TODO: UserPlacementsEntityCountry]    
+  dependsOn:
+    - component:EnrichedUserPlacements-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbanalyticsstor--refined-mapped-swix-dumps
+  description: cmbanalyticsstor--refined-mapped-swix-dumps description
+spec:
+  type: azure-blob
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:[TODO: CoreToEntityMapper-job]    
+    - component:[TODO: Entities-Offer-job]
+    - component:EnrichedUserPlacements-job
+    - component:[TODO: SportsFeedsLocations-job]
+  dependsOn:
+    - component:[TODO: CoreOffersRunner-job]
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -728,3 +764,20 @@ spec:
     - resource:cmbanalyticsstor--refined-user-placements
   dependsOn:
     - resource:cmbanalyticsstor--ingest-placements
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: EnrichedUserPlacements-job
+  description: databricks job
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependsOn:
+    - resource:cmbanalyticsstor--refined-user-placements
+    - resource:cmbanalyticsstor--refined-mapped-swix-dumps
+  dependencyOf:
+    - resource:cmbanalyticsstor--enriched-user-placements
