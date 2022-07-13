@@ -682,9 +682,48 @@ spec:
   system: system-a
   dependencyOf:
     - component:entity-service
-    #- component:TODO: SearchIndexer
+    - component:search-indexer
   dependsOn:
     - component:RealTimeEntityPopularity-job
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbanalyticsstor--user-placements-entity-country
+  description: long and short term (per entity type)
+spec:
+  type: azure-blob
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:NormalizedUserInterestShortTerm-job
+    - component:NormalizedUserInterestFull-job
+    #TODO:- component:PerUserPopularity-job
+    #TODO:- component:NormalizedEntityInterest-job
+    #TODO:- component:normalizedCountryInterestShortTerm-job
+    #TODO:- component:normalizedCountryInterestFull-job
+  dependsOn:
+    - component:UserPlacementsEntityCountryShortTerm-job
+    - component:UserPlacementsEntityCountryFull-job    
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cmbanalyticsstor--normalized-user-interest
+  description: full and short term
+spec:
+  type: azure-blob
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  dependencyOf:
+    - component:KMeansUserClusteringModelBuilder-job  
+    #TODO:- component:UserClusgterPopularity-job
+    #TODO:- component:UserClustering
+  dependsOn:
+    - component:NormalizedUserInterestShortTerm-job
+    - component:NormalizedUserInterestFull-job
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -860,3 +899,51 @@ spec:
     - resource:cmbanalyticsstor--enriched-user-placements
   dependencyOf:
     - resource:cmbanalyticsstor--user-placements-entity-country
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: NormalizedUserInterestFull-job
+  description: databricks job
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependsOn:
+    - resource:cmbanalyticsstor--user-placements-entity-country
+  dependencyOf:
+    - resource:cmbanalyticsstor--normalized-user-interest
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: NormalizedUserInterestShortTerm-job
+  description: databricks job
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependsOn:
+    - resource:cmbanalyticsstor--user-placements-entity-country
+  dependencyOf:
+    - resource:cmbanalyticsstor--normalized-user-interest
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: KMeansUserClusteringModelBuilder-job
+  description: databricks job
+spec:
+  type: databricks-job
+  lifecycle: production
+  owner: group:product-search
+  system: system-a
+  subcomponentOf: Sports-Data-DataBricks-Popularity
+  dependsOn:
+    - resource:cmbanalyticsstor--normalized-user-interest
+  #dependencyOf:
+  #  TODO:- resource:cmbanalyticsstor--user-clustering-models
